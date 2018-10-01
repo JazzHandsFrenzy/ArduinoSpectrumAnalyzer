@@ -1,8 +1,8 @@
-
+in
 //This is not my code. I found it and used it as a base since the code for the instructables is bullshit and doesnt work. Ill make others lifes easier. 
 //I havent messed with the bluetooth yet, will keep posted as I go. I just do this when i have free time, so dont expect fast speedy work. 
 //And lastly, I have managed to use the same wireing diagram as the instructables so, just follow the guide. 
-
+//https://www.instructables.com/id/Arduino-Spectrum-Analyzer-on-a-10x10-RGB-LED-Matri/ -----Followed this guide to make the hardware side of it. 
 
 // 16 Band led spectrum analyzer
 // neopixel led strip 16 * 16 + hc-06 + simple mic amp
