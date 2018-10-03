@@ -1,8 +1,8 @@
-in
+
 //This is not my code. I found it and used it as a base since the code for the instructables is bullshit and doesnt work. Ill make others lifes easier. 
 //I havent messed with the bluetooth yet, will keep posted as I go. I just do this when i have free time, so dont expect fast speedy work. 
 //And lastly, I have managed to use the same wireing diagram as the instructables so, just follow the guide. 
-//https://www.instructables.com/id/Arduino-Spectrum-Analyzer-on-a-10x10-RGB-LED-Matri/ -----Followed this guide to make the hardware side of it. 
+
 
 // 16 Band led spectrum analyzer
 // neopixel led strip 16 * 16 + hc-06 + simple mic amp
@@ -15,16 +15,17 @@ in
 
 
 unsigned char brightness = 50;
-unsigned char line_color = 0;    // 0 : rainbow 
+unsigned char line_color = 8;    // 0 : rainbow 
 unsigned char dot_dir = 1 ;      // 1:up,    0:down
-unsigned char dot_color = 0  ;   // rainbow, This is chosen further down the code, feel free to change it to what you like 
+unsigned char dot_color = 7  ;   // rainbow, This is chosen further down the code, feel free to change it to what you like 
 unsigned char line_dir = 1 ;     // 1: up    0: down  
-unsigned char random_flag=1;
+unsigned char random_flag=0;
 
 
 #include <Adafruit_NeoPixel.h>
 #define PIN 3
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(100, PIN, NEO_GRB + NEO_KHZ800);
+
 
 #define LOG_OUT 1 // use the log output function
 #define FFT_N 256 // set to 256 point fft
@@ -34,10 +35,10 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(100, PIN, NEO_GRB + NEO_KHZ800);
 signed int sel_freq[11] = {0,2,4,6,8,10,12,14,16,18,20};
 
 signed int freq_offset[10] = { 
-15,15,15,15,15,15,15,15,15,15   //Edit this if your shit gets weird false lights coming on. i recoment starting at all 15s and increrase if lights dont go off when source is turned all the way down. 
+90,35,20,25,15,15,15,15,15,15   //Edit this if your shit gets weird false lights coming on. i recoment starting at all 15s and increrase if lights dont go off when source is turned all the way down. 
 };      
 unsigned char freq_div[10] = { 
-        6,6,6,6,6,6,6,6,6,6     //if it keeps peaking the top led, then add 1 to the specific row. and if its not responsive, remove 1. 
+        1,6,8,7,7,8,7,6,6,6     //if it keeps peaking the top led, then add 1 to the specific row. 
 };
 
 unsigned char band[10] = { 
@@ -49,7 +50,7 @@ unsigned char dot_band[10]={
         
         
 void setup() {
- //       Serial.begin(9600); // use the serial port
+    Serial.begin(9600); // use the serial port
         TIMSK0 = 0; // turn off timer0 for lower jitter
         ADCSRA = 0xe5; // set the adc to free running mode
         ADMUX = 0b01000111; // use adc0
@@ -96,7 +97,7 @@ void loop() {
                               // for(int ii=0; ii<10; ii++) display_band[ii] =0; 
 
 
-                if(++max_dot_count>=8 ) { ////8
+                if(++max_dot_count>=10 ) { ////8
                         max_dot_count=0; 
                         for(int ii=0; ii<10; ii++)
                         {
@@ -126,7 +127,7 @@ void loop() {
                         }
                         fft_value = fft_sum / sum_count - freq_offset[ii];
 
-                        ////fft_value = fft_log_out[ sel_freq[ii] ] - freq_offset[ii];     // freq select
+                        //fft_value = fft_log_out[ sel_freq[ii] ] - freq_offset[ii];     // freq select
 
                         if( fft_value < 0 ) fft_value = 0;
 
@@ -166,21 +167,22 @@ void loop() {
                                         else if(line_color == 5)strip.setPixelColor(address, 0x0000FF );  // line color : rainbow
                                         else if(line_color == 6)strip.setPixelColor(address, 0xFF00FF );  // line color : rainbow
                                         else if(line_color == 7)strip.setPixelColor(address, 0xFFFFFF );  // line color : rainbow 
-                                        else if(line_color == 8)strip.setPixelColor(address, Wheel(15-jj + (16*ii))   );  // line color : rainbow
+                                        else if(line_color == 8)strip.setPixelColor(address, 0x00FFFF );  // line color : rainbow 
+                                        else if(line_color == 9)strip.setPixelColor(address, Wheel(15-jj + (16*ii))   );  // line color : rainbow
                                         else ;
                                 }
                                 else   strip.setPixelColor(address, 0  ); 
                         }
                 }
                 strip.show();
-/*
+
                 if( Serial.available() > 0 )
                 {
                         static char rx_data=0;
                         rx_data = Serial.read();
                         if( rx_data == '1' ){ 
                                 line_color++;  
-                                if(line_color > 8)line_color = 0;   
+                                if(line_color > 9)line_color = 0;   
                                 Serial.print("L color: ");
                                 Serial.write(line_color+'0');  
                                 Serial.println(); 
@@ -236,9 +238,9 @@ void loop() {
                                 dot_color = random(9);
                         }
                 }
-                */
+                
         }
-//}
+
 
 uint32_t Wheel(byte WheelPos) {
         if(WheelPos < 85) {
