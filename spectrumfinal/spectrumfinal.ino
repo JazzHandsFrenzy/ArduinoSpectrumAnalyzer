@@ -127,7 +127,7 @@ void loop() {
                         }
                         fft_value = fft_sum / sum_count - freq_offset[ii];
 
-                        //fft_value = fft_log_out[ sel_freq[ii] ] - freq_offset[ii];     // freq select
+                        ////fft_value = fft_log_out[ sel_freq[ii] ] - freq_offset[ii];     // freq select
 
                         if( fft_value < 0 ) fft_value = 0;
 
@@ -146,29 +146,28 @@ void loop() {
                                 // dot color line color 
                                 if(dot_band[ii] == jj) 
                                 {
-                                        if(dot_color == 0)strip.setPixelColor(address, Wheel(9+jj + (10*ii) + color_offset)  );  // dot color
-                                        else if(dot_color == 1)strip.setPixelColor(address, 0xFF0000);  // dot color
-                                        else if(dot_color == 2)strip.setPixelColor(address, 0xFFFF00);  // dot color
-                                        else if(dot_color == 3)strip.setPixelColor(address, 0x00FF00);  // dot color    Looks scary, but google the weird number after address and google will show you the color. 
-                                        else if(dot_color == 4)strip.setPixelColor(address, 0x00FFFF);  // dot color
-                                        else if(dot_color == 5)strip.setPixelColor(address, 0x0000FF);  // dot color
-                                        else if(dot_color == 6)strip.setPixelColor(address, 0xFF00FF);  // dot color
-                                        else if(dot_color == 7)strip.setPixelColor(address, 0xFFFFFF);  // dot color
-                                        else if(dot_color == 8)strip.setPixelColor(address, Wheel(15-jj + (16*ii)));  // dot color
+                                        if(dot_color == 0)strip.setPixelColor(address, Wheel(9+jj + (10*ii) + color_offset)  );  // dot color Rainbow Moving
+                                        else if(dot_color == 1)strip.setPixelColor(address, 0xFF0000);  // dot color Red
+                                        else if(dot_color == 2)strip.setPixelColor(address, 0xFFFF00);  // dot color Yellow
+                                        else if(dot_color == 3)strip.setPixelColor(address, 0x00FF00);  // dot color Lime Green    Looks scary, but google the weird number after address and google will show you the color. 
+                                        else if(dot_color == 4)strip.setPixelColor(address, 0x00FFFF);  // dot color Aqua
+                                        else if(dot_color == 5)strip.setPixelColor(address, 0x0000FF);  // dot color Blue
+                                        else if(dot_color == 6)strip.setPixelColor(address, 0xFF00FF);  // dot color Magenta/pink
+                                        else if(dot_color == 7)strip.setPixelColor(address, 0xFFFFFF);  // dot color White
+                                        else if(dot_color == 8)strip.setPixelColor(address, Wheel(15-jj + (16*ii)));  // dot color Rainbow still
                                         else ;
                                 }
                                 else if(display_band[ii] > jj) 
                                 {
-                                        if(line_color == 0)strip.setPixelColor(address, Wheel(9-jj + (10*ii) + color_offset )   );  // line color : rainbow
-                                        else if(line_color == 1)strip.setPixelColor(address, 0xFF0000);  // line color : rainbow
-                                        else if(line_color == 2)strip.setPixelColor(address, 0xFFFF00 );  // line color : rainbow
-                                        else if(line_color == 3)strip.setPixelColor(address, 0x00FF00 );  // line color : rainbow
-                                        else if(line_color == 4)strip.setPixelColor(address, 0x00FFFF );  // line color : rainbow
-                                        else if(line_color == 5)strip.setPixelColor(address, 0x0000FF );  // line color : rainbow
-                                        else if(line_color == 6)strip.setPixelColor(address, 0xFF00FF );  // line color : rainbow
-                                        else if(line_color == 7)strip.setPixelColor(address, 0xFFFFFF );  // line color : rainbow 
-                                        else if(line_color == 8)strip.setPixelColor(address, 0x00FFFF );  // line color : rainbow 
-                                        else if(line_color == 9)strip.setPixelColor(address, Wheel(15-jj + (16*ii))   );  // line color : rainbow
+                                        if(line_color == 0)strip.setPixelColor(address, Wheel(9-jj + (10*ii) + color_offset )   );  // line color : rainbow moving
+                                        else if(line_color == 1)strip.setPixelColor(address, 0xFF0000);  // line color : Red
+                                        else if(line_color == 2)strip.setPixelColor(address, 0xFFFF00 );  // line color : Yellow
+                                        else if(line_color == 3)strip.setPixelColor(address, 0x00FF00 );  // line color : Lime Green
+                                        else if(line_color == 4)strip.setPixelColor(address, 0x00FFFF );  // line color : Aqua
+                                        else if(line_color == 5)strip.setPixelColor(address, 0x0000FF );  // line color : Blue
+                                        else if(line_color == 6)strip.setPixelColor(address, 0xFF00FF );  // line color : Magenta/pink
+                                        else if(line_color == 7)strip.setPixelColor(address, 0xFFFFFF );  // line color : White
+                                        else if(line_color == 8)strip.setPixelColor(address, Wheel(15-jj + (16*ii))   );  // line color : rainbow still
                                         else ;
                                 }
                                 else   strip.setPixelColor(address, 0  ); 
