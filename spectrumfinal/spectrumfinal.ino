@@ -175,38 +175,40 @@ void loop() {
                 }
                 strip.show();
 
-                if( Serial.available() > 0 )
+                if( Serial.available() > 0 )//For Bluetooth Control
                 {
                         static char rx_data=0;
                         rx_data = Serial.read();
                         if( rx_data == '1' ){ 
                                 line_color++;  
-                                if(line_color > 9)line_color = 0;   
-                                Serial.print("L color: ");
+                                if(line_color > 8)line_color = 0;   
+                                Serial.print("L color: ");            //go up through list for the line colors
                                 Serial.write(line_color+'0');  
                                 Serial.println(); 
 
                         }
                         else if( rx_data == '2' ){ 
                                 dot_color++; 
-                                if(dot_color > 8)dot_color = 0;  
+                                if(dot_color > 8)dot_color = 0;     //go up through list for dot colors. 
                                 Serial.print("D color: ");
                                 Serial.write(dot_color+'0');  
                                 Serial.println(); 
                         }
-                        else if( rx_data == 'd') 
+                        else if( rx_data == '3') 
                         {
-                                dot_dir ^= 1;
-                                Serial.print("D dir: ");
-                                Serial.write(dot_dir+'0');  
+                                line_color--;  
+                                if(line_color < 0)line_color = 8;   //go down through line colors
+                                Serial.print("L color: ");
+                                Serial.write(line_color+'0');  
                                 Serial.println(); 
 
                         }
-                        else if( rx_data == 'l') 
+                        else if( rx_data == '4') 
                         {
-                                line_dir ^= 1;
-                                Serial.print("L dir: ");
-                                Serial.write(line_dir+'0');  
+                                dot_color--; 
+                                if(dot_color < 0)dot_color = 8;  
+                                Serial.print("D color: ");        //go down through dot colors
+                                Serial.write(dot_color+'0');  
                                 Serial.println(); 
                         }
                         else if( rx_data == 'b'){ 
