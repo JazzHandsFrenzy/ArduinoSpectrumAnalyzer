@@ -14,7 +14,7 @@
 // 정 안된다면.. 메가를 이용
 
 
-unsigned char brightness = 50;
+unsigned char brightness = 25.5;
 unsigned char line_color = 8;    // 0 : rainbow 
 unsigned char dot_dir = 1 ;      // 1:up,    0:down
 unsigned char dot_color = 7  ;   // rainbow, This is chosen further down the code, feel free to change it to what you like 
@@ -211,9 +211,9 @@ void loop() {
                                 Serial.println(); 
                         }
                         else if( rx_data == 'b'){ 
-                                brightness += 51; 
+                                brightness += 25.5; 
                                 strip.setBrightness(brightness);  
-                                if( brightness < 51)brightness = 51; 
+                                if( brightness < 25.5)brightness = 25.5; 
                                 Serial.print("brightness: ");
                                 Serial.println(brightness); 
                         }
