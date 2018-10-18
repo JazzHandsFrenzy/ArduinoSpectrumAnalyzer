@@ -135,7 +135,7 @@ void loop() {
 
                         if( display_band[ii] < band[ii] )  display_band[ii]= band[ii];     // line update
 
-                        for(int jj=0; jj < 5; jj++) //Y Axis Height
+                        for(int jj=0; jj < 10; jj++) //Y Axis Height
                         {
                                 int address =0;
                             // line direction LED 16ea
