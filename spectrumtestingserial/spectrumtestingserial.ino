@@ -34,10 +34,10 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(100, PIN, NEO_GRB + NEO_KHZ800);
 signed int sel_freq[11] = {0,2,4,6,8,10,12,14,16,18,20};
 
 signed int freq_offset[10] = { 
-90,35,20,25,15,15,15,15,15,15   //Edit this if your shit gets weird false lights coming on. i recoment starting at all 15s and increrase if lights dont go off when source is turned all the way down. 
+192,35,20,25,15,20,20,20,20,20   //Edit this if your shit gets weird false lights coming on. i recoment starting at all 15s and increrase if lights dont go off when source is turned all the way down. 
 };      
 unsigned char freq_div[10] = { 
-        1,6,8,7,7,8,7,6,6,6     //if it keeps peaking the top led, then add 1 to the specific row. 
+        2,15,15,15,15,15,15,15,15,15     //if it keeps peaking the top led, then add 1 to the specific row. 
 };
 
 unsigned char band[10] = { 
@@ -126,7 +126,7 @@ void loop() {
                         }
                         fft_value = fft_sum / sum_count - freq_offset[ii];
 
-                        ////fft_value = fft_log_out[ sel_freq[ii] ] - freq_offset[ii];     // freq select
+                        fft_value = fft_log_out[ sel_freq[ii] ] - freq_offset[ii];     // freq select
 
                         if( fft_value < 0 ) fft_value = 0;
 
@@ -239,7 +239,7 @@ Serial.print("|");
 Dotprint();  
 }
                                      
-void Dotprint(){                                       if(dot_color == 0)Serial.print("RainbowMov");  // dot color Rainbow Moving
+void Dotprint(){                                       if(dot_color == 0)Serial.print("D.RainbowMov");  // dot color Rainbow Moving
                                         else if(dot_color == 1)Serial.println("D.Red");  // dot color Red
                                         else if(dot_color == 2)Serial.println("D.Yellow");  // dot color Yellow
                                         else if(dot_color == 3)Serial.println("D.Lime Green");  // dot color Lime Green    Looks scary, but google the weird number after address and google will show you the color. 

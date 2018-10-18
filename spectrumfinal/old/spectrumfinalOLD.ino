@@ -14,12 +14,13 @@
 // 정 안된다면.. 메가를 이용
 
 
-unsigned char brightness = 50;
+unsigned char brightness = 25.5;
 unsigned char line_color = 8;    // 0 : rainbow 
 unsigned char dot_dir = 1 ;      // 1:up,    0:down
 unsigned char dot_color = 7  ;   // rainbow, This is chosen further down the code, feel free to change it to what you like 
 unsigned char line_dir = 1 ;     // 1: up    0: down  
 unsigned char random_flag=0;
+
 
 #include <Adafruit_NeoPixel.h>
 #define PIN 3
@@ -31,13 +32,13 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(100, PIN, NEO_GRB + NEO_KHZ800);
 #include <math.h>
 #include <FFT.h> // include the library
 
-signed int sel_freq[11] = {0,2,4,6,8,10,12,14,16,18,20};
+signed int sel_freq[11] = {2,4,6,7,8,10,12,14,16,18};
 
 signed int freq_offset[10] = { 
-192,35,20,25,15,20,20,20,20,20   //Edit this if your shit gets weird false lights coming on. i recoment starting at all 15s and increrase if lights dont go off when source is turned all the way down. 
+90,25,25,35,55,35,45,45,45,45   //Edit this if your shit gets weird false lights coming on. i recoment starting at all 15s and increrase if lights dont go off when source is turned all the way down. 
 };      
 unsigned char freq_div[10] = { 
-        2,15,15,15,15,15,15,15,15,15     //if it keeps peaking the top led, then add 1 to the specific row. 
+       8,15,15,14,12,14,13,13,13,13     //if it keeps peaking the top led, then add 1 to the specific row. 
 };
 
 unsigned char band[10] = { 
@@ -63,7 +64,7 @@ void setup() {
 
 void loop() {
         
-        while(1) { // reduces jitter
+       // while(1) { // reduces jitter
                 cli();  // UDRE interrupt slows this way down on arduino1.0
                 for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
                         while(!(ADCSRA & 0x10)); // wait for adc to be ready
@@ -98,7 +99,7 @@ void loop() {
 
                 if(++max_dot_count>=10 ) { ////8
                         max_dot_count=0; 
-                        for(int ii=0; ii<10; ii++)
+                        for(int ii=0; ii<11; ii++)
                         {
                                 if(dot_dir){  
                                         if( dot_band[ii] > 0 )dot_band[ii] -=1; 
@@ -114,7 +115,7 @@ void loop() {
 
 
 
-                for(int ii=0; ii<10; ii++)   //X-axis height
+                for(int ii=0; ii<10; ii++)   //
                 {
                         int fft_value=0;
                         long fft_sum=0;
@@ -135,7 +136,7 @@ void loop() {
 
                         if( display_band[ii] < band[ii] )  display_band[ii]= band[ii];     // line update
 
-                        for(int jj=0; jj < 10; jj++) //Y Axis Height
+                        for(int jj=0; jj < 10; jj++)
                         {
                                 int address =0;
                             // line direction LED 16ea
@@ -145,28 +146,29 @@ void loop() {
                                 // dot color line color 
                                 if(dot_band[ii] == jj) 
                                 {
-                                        if(dot_color == 0)strip.setPixelColor(address, Wheel(9+jj + (10*ii) + color_offset)  );  // dot color Rainbow Moving
-                                        else if(dot_color == 1)strip.setPixelColor(address, 0xFF0000);  // dot color Red
-                                        else if(dot_color == 2)strip.setPixelColor(address, 0xFFFF00);  // dot color Yellow
-                                        else if(dot_color == 3)strip.setPixelColor(address, 0x00FF00);  // dot color Lime Green    Looks scary, but google the weird number after address and google will show you the color. 
-                                        else if(dot_color == 4)strip.setPixelColor(address, 0x00FFFF);  // dot color Aqua
-                                        else if(dot_color == 5)strip.setPixelColor(address, 0x0000FF);  // dot color Blue
-                                        else if(dot_color == 6)strip.setPixelColor(address, 0xFF00FF);  // dot color Magenta/pink
-                                        else if(dot_color == 7)strip.setPixelColor(address, 0xFFFFFF);  // dot color White
-                                        else if(dot_color == 8)strip.setPixelColor(address, Wheel(15-jj + (16*ii)));  // dot color Rainbow still
+                                        if(dot_color == 0)strip.setPixelColor(address, Wheel(9+jj + (10*ii) + color_offset)  );  // dot color
+                                        else if(dot_color == 1)strip.setPixelColor(address, 0xFF0000);  // dot color
+                                        else if(dot_color == 2)strip.setPixelColor(address, 0xFFFF00);  // dot color
+                                        else if(dot_color == 3)strip.setPixelColor(address, 0x00FF00);  // dot color    Looks scary, but google the weird number after address and google will show you the color. 
+                                        else if(dot_color == 4)strip.setPixelColor(address, 0x00FFFF);  // dot color
+                                        else if(dot_color == 5)strip.setPixelColor(address, 0x0000FF);  // dot color
+                                        else if(dot_color == 6)strip.setPixelColor(address, 0xFF00FF);  // dot color
+                                        else if(dot_color == 7)strip.setPixelColor(address, 0xFFFFFF);  // dot color
+                                        else if(dot_color == 8)strip.setPixelColor(address, Wheel(15-jj + (16*ii)));  // dot color
                                         else ;
                                 }
                                 else if(display_band[ii] > jj) 
                                 {
-                                        if(line_color == 0)strip.setPixelColor(address, Wheel(9-jj + (10*ii) + color_offset )   );  // line color : rainbow moving
-                                        else if(line_color == 1)strip.setPixelColor(address, 0xFF0000);  // line color : Red
-                                        else if(line_color == 2)strip.setPixelColor(address, 0xFFFF00 );  // line color : Yellow
-                                        else if(line_color == 3)strip.setPixelColor(address, 0x00FF00 );  // line color : Lime Green
-                                        else if(line_color == 4)strip.setPixelColor(address, 0x00FFFF );  // line color : Aqua
-                                        else if(line_color == 5)strip.setPixelColor(address, 0x0000FF );  // line color : Blue
-                                        else if(line_color == 6)strip.setPixelColor(address, 0xFF00FF );  // line color : Magenta/pink
-                                        else if(line_color == 7)strip.setPixelColor(address, 0xFFFFFF );  // line color : White
-                                        else if(line_color == 8)strip.setPixelColor(address, Wheel(15-jj + (16*ii))   );  // line color : rainbow still
+                                        if(line_color == 0)strip.setPixelColor(address, Wheel(9-jj + (10*ii) + color_offset )   );  // line color : rainbow
+                                        else if(line_color == 1)strip.setPixelColor(address, 0xFF0000);  // line color : rainbow
+                                        else if(line_color == 2)strip.setPixelColor(address, 0xFFFF00 );  // line color : rainbow
+                                        else if(line_color == 3)strip.setPixelColor(address, 0x00FF00 );  // line color : rainbow
+                                        else if(line_color == 4)strip.setPixelColor(address, 0x00FFFF );  // line color : rainbow
+                                        else if(line_color == 5)strip.setPixelColor(address, 0x0000FF );  // line color : rainbow
+                                        else if(line_color == 6)strip.setPixelColor(address, 0xFF00FF );  // line color : rainbow
+                                        else if(line_color == 7)strip.setPixelColor(address, 0xFFFFFF );  // line color : rainbow 
+                                        else if(line_color == 8)strip.setPixelColor(address, 0x00FFFF );  // line color : rainbow 
+                                        else if(line_color == 9)strip.setPixelColor(address, Wheel(15-jj + (16*ii))   );  // line color : rainbow
                                         else ;
                                 }
                                 else   strip.setPixelColor(address, 0  ); 
@@ -174,47 +176,53 @@ void loop() {
                 }
                 strip.show();
 
-                if( Serial.available() > 0 )//For Bluetooth Control
+                if( Serial.available() > 0 )
                 {
                         static char rx_data=0;
                         rx_data = Serial.read();
                         if( rx_data == '1' ){ 
                                 line_color++;  
-                                if(line_color > 8)line_color = 0;   
-                               Xprint();
+                                if(line_color > 9)line_color = 0;   
+                                Serial.print("L color: ");
+                                Serial.write(line_color+'0');  
+                                Serial.println(); 
 
                         }
                         else if( rx_data == '2' ){ 
                                 dot_color++; 
-                                if(dot_color > 8)dot_color = 0;     //go up through list for dot colors. 
-                                Xprint();
-                                
+                                if(dot_color > 8)dot_color = 0;  
+                                Serial.print("D color: ");
+                                Serial.write(dot_color+'0');  
+                                Serial.println(); 
                         }
-                        else if( rx_data == '3') 
+                        else if( rx_data == 'd') 
                         {
-                                line_color--;  
-                                if(line_color < 0)line_color = 8;   //go down through line colors
-                                Xprint();
+                                dot_dir ^= 1;
+                                Serial.print("D dir: ");
+                                Serial.write(dot_dir+'0');  
+                                Serial.println(); 
 
                         }
-                        else if( rx_data == '4') 
+                        else if( rx_data == 'l') 
                         {
-                                dot_color--; 
-                                if(dot_color < 0)dot_color = 8;  
-                                Xprint(); 
+                                line_dir ^= 1;
+                                Serial.print("L dir: ");
+                                Serial.write(line_dir+'0');  
+                                Serial.println(); 
                         }
                         else if( rx_data == 'b'){ 
-                                brightness += 25; 
+                                brightness += 25.5; 
                                 strip.setBrightness(brightness);  
-                                if( brightness < 25)brightness = 25; 
+                                if( brightness < 25.5)brightness = 25.5; 
                                 Serial.print("brightness: ");
                                 Serial.println(brightness); 
                         }
                         else if( rx_data == 'r')
                         {
                                 random_flag ^= 1;
-if(random_flag) Serial.print("R ON");
-                                else Serial.print("R OFF");                        }
+                                if(random_flag) Serial.print("R ON");
+                                else Serial.print("R OFF");
+                        }
                 }
                 
                 if( random_flag )
@@ -230,37 +238,8 @@ if(random_flag) Serial.print("R ON");
                                 dot_color = random(9);
                         }
                 }
-}       
+                
         }
-
-void Xprint(){
-lineprint();
-Serial.print("|");
-Dotprint();  
-}
-                                     
-void Dotprint(){                                       if(dot_color == 0)Serial.print("D.RainbowMov");  // dot color Rainbow Moving
-                                        else if(dot_color == 1)Serial.println("D.Red");  // dot color Red
-                                        else if(dot_color == 2)Serial.println("D.Yellow");  // dot color Yellow
-                                        else if(dot_color == 3)Serial.println("D.Lime Green");  // dot color Lime Green    Looks scary, but google the weird number after address and google will show you the color. 
-                                        else if(dot_color == 4)Serial.println("D.Aqua");  // dot color Aqua                                       else if(dot_color == 5)Serial.println("D.Blue");  // dot color Blue
-                                        else if(dot_color == 6)Serial.println("D.Magenta/pink");  // dot color Magenta/pink
-                                        else if(dot_color == 7)Serial.println("D.White");  // dot color White
-                                        else if(dot_color == 8)Serial.println("D.RainbowStill");  // dot color Rainbow still
-                else;}
-void lineprint(){                                      
-                                        if(line_color == 0)Serial.print("RainbowMov");  // dot color Rainbow Moving
-                                        else if(line_color == 1)Serial.print("Red");  // dot color Red
-                                        else if(line_color == 2)Serial.print("Yellow");  // dot color Yellow
-                                        else if(line_color == 3)Serial.print("Lime Green");  // dot color Lime Green    Looks scary, but google the weird number after address and google will show you the color. 
-                                        else if(line_color == 4)Serial.print("Aqua");  // dot color Aqua
-                                        else if(line_color == 5)Serial.print("Blue");  // dot color Blue
-                                        else if(line_color == 6)Serial.print("Magenta/pink");  // dot color Magenta/pink
-                                        else if(line_color == 7)Serial.print("White");  // dot color White
-                                        else if(line_color == 8)Serial.print("RainbowStill");  // dot color Rainbow still
-                                        else ;
-}
-
 
 
 uint32_t Wheel(byte WheelPos) {
