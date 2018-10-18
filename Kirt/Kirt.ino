@@ -31,13 +31,13 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(100, PIN, NEO_GRB + NEO_KHZ800);
 #include <math.h>
 #include <FFT.h> // include the library
 
-signed int sel_freq[11] = {0,2,4,6,8,10,12,14,16,18,20};
+signed int sel_freq[6] = {0,4,8,12,16,20};
 
-signed int freq_offset[10] = { 
-90,35,20,25,15,15,15,15,15,15   //Edit this if your shit gets weird false lights coming on. i recoment starting at all 15s and increrase if lights dont go off when source is turned all the way down. 
+signed int freq_offset[5] = { 
+70,20,15,15,15   //Edit this if your shit gets weird false lights coming on. i recoment starting at all 15s and increrase if lights dont go off when source is turned all the way down. 
 };      
-unsigned char freq_div[10] = { 
-        1,6,8,7,7,8,7,6,6,6     //if it keeps peaking the top led, then add 1 to the specific row. 
+unsigned char freq_div[5] = { 
+        1,6,8,7,7     //if it keeps peaking the top led, then add 1 to the specific row. 
 };
 
 unsigned char band[10] = { 
@@ -114,7 +114,7 @@ void loop() {
 
 
 
-                for(int ii=0; ii<10; ii++)   //X-axis height
+                for(int ii=0; ii<5; ii++)   //X-Axis width. 
                 {
                         int fft_value=0;
                         long fft_sum=0;
@@ -135,7 +135,7 @@ void loop() {
 
                         if( display_band[ii] < band[ii] )  display_band[ii]= band[ii];     // line update
 
-                        for(int jj=0; jj < 5; jj++) //Y Axis Height
+                        for(int jj=0; jj < 20; jj++) //Y Axis Height
                         {
                                 int address =0;
                             // line direction LED 16ea
