@@ -167,6 +167,18 @@ void loop() {
                                         else if(line_color == 6)strip.setPixelColor(address, 0xFF00FF );  // line color : Magenta/pink
                                         else if(line_color == 7)strip.setPixelColor(address, 0xFFFFFF );  // line color : White
                                         else if(line_color == 8)strip.setPixelColor(address, Wheel(15-jj + (16*ii))   );  // line color : rainbow still
+                                      //  else if(line_color == 9){
+                                        //      if(2>=1){
+                                          //    strip.setPixelColor(address, 0x0000FF );  // line color : Blue
+                                            // }
+                                              //else if(2>=6){
+                                             // strip.setPixelColor(address, 0xFFFF00 );  // line color : Blue
+                                            // }
+                                             // else if(Colors>=9){
+                                             // strip.setPixelColor(address, 0xFF0000 );  // line color : Blue
+                                            // }
+                                            // else;
+                                       // }
                                         else ;
                                 }
                                 else   strip.setPixelColor(address, 0  ); 

@@ -14,10 +14,10 @@
 // 정 안된다면.. 메가를 이용
 
 
-unsigned char brightness = 25;
-unsigned char line_color = 8;    // 0 : non moving rainbow. 
+unsigned char brightness = 50;
+unsigned char line_color = 8;    // 0 : rainbow 
 unsigned char dot_dir = 1 ;      // 1:up,    0:down
-unsigned char dot_color = 7  ;   // White, This is chosen further down the code, feel free to change it to what you like 
+unsigned char dot_color = 7  ;   // rainbow, This is chosen further down the code, feel free to change it to what you like 
 unsigned char line_dir = 1 ;     // 1: up    0: down  
 unsigned char random_flag=0;
 
@@ -65,7 +65,7 @@ void loop() {
         
         while(1) { // reduces jitter
                 cli();  // UDRE interrupt slows this way down on arduino1.0
-                for (int i = 0 ; i < 1024 ; i += 2) { // save 256 samples
+                for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
                         while(!(ADCSRA & 0x10)); // wait for adc to be ready
                         ADCSRA = 0xf5; // restart adc
                         byte m = ADCL; // fetch adc data
