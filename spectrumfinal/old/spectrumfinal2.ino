@@ -15,13 +15,12 @@
 
 
 unsigned char brightness = 50;
-unsigned char line_color = 10;    // 0 : rainbow 
+unsigned char line_color = 8;    // 0 : rainbow 
 unsigned char dot_dir = 1 ;      // 1:up,    0:down
 unsigned char dot_color = 7  ;   // rainbow, This is chosen further down the code, feel free to change it to what you like 
 unsigned char line_dir = 1 ;     // 1: up    0: down  
 unsigned char random_flag=0;
-unsigned char dot_on = 0; //1:on 0:off
-unsigned char axis = 10; //DO NOT CHANGE!!!
+
 #include <Adafruit_NeoPixel.h>
 #define PIN 3
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(100, PIN, NEO_GRB + NEO_KHZ800);
@@ -91,8 +90,8 @@ void loop() {
                         for(int ii=0; ii<11; ii++)if( display_band[ii] > 0 )  display_band[ii] -=1; 
                 }
 
-                           //     line_delay_count=100; 
-                             //  for(int ii=0; ii<10; ii++)if( display_band[ii] > 0 )  display_band[ii] -=1;    //These three lines allow you to have a custom refresh speed so, only mess with the line delay. I just keep it out. 
+                              //  line_delay_count=0; 
+                              // for(int ii=0; ii<10; ii++)if( display_band[ii] > 0 )  display_band[ii] -=1;    //These three lines allow you to have a custom refresh speed so, only mess with the line delay. I just keep it out. 
 
                               // for(int ii=0; ii<10; ii++) display_band[ii] =0; 
 
@@ -113,9 +112,9 @@ void loop() {
                 static unsigned char color_offset=0;
                 color_offset++;
 
-if(dot_on == 1)axis=10;
-else if(dot_on == 0)axis=11;
-                for(int ii=0; ii<axis; ii++)   //X-axis height
+
+
+                for(int ii=0; ii<10; ii++)   //X-axis height
                 {
                         int fft_value=0;
                         long fft_sum=0;
@@ -132,24 +131,19 @@ else if(dot_on == 0)axis=11;
                         if( fft_value < 0 ) fft_value = 0;
 
                         band[ii] = fft_value / freq_div[ii];                  // current value update  range 0~15
-                        if(band[ii] > axis) band[ii]=0;
+                        if(band[ii] > 10) band[ii]=0;
 
                         if( display_band[ii] < band[ii] )  display_band[ii]= band[ii];     // line update
 
-                        for(int jj=0; jj < axis; jj++) //Y Axis Height
+                        for(int jj=0; jj < 10; jj++) //Y Axis Height
                         {
                                 int address =0;
                             // line direction LED 16ea
-                              if (dot_on == 0){
-                                if( (ii % 2) == (line_dir)) address = 0+jj-1 + (10*ii);
-                                else address = jj-1 + (10*ii);
-                              }
-                              if(dot_on == 1){
                                 if( (ii % 2) == (line_dir)) address = 0+jj + (10*ii);
-                                else address = jj + (10*ii);}
-                                 
+                                else address = jj + (10*ii); 
+
                                 // dot color line color 
-                                if((dot_band[ii] == jj) && (dot_on == 1)) 
+                                if(dot_band[ii] == jj) 
                                 {
                                         if(dot_color == 0)strip.setPixelColor(address, Wheel(9+jj + (10*ii) + color_offset)  );  // dot color Rainbow Moving
                                         else if(dot_color == 1)strip.setPixelColor(address, 0xFF0000);  // dot color Red
@@ -159,7 +153,7 @@ else if(dot_on == 0)axis=11;
                                         else if(dot_color == 5)strip.setPixelColor(address, 0x0000FF);  // dot color Blue
                                         else if(dot_color == 6)strip.setPixelColor(address, 0xFF00FF);  // dot color Magenta/pink
                                         else if(dot_color == 7)strip.setPixelColor(address, 0xFFFFFF);  // dot color White
-                                        else if(dot_color == 8)strip.setPixelColor(address, Wheel(9-jj + (10*ii)));  // dot color Rainbow still
+                                        else if(dot_color == 8)strip.setPixelColor(address, Wheel(15-jj + (16*ii)));  // dot color Rainbow still
                                         else ;
                                 }
                                 else if(display_band[ii] > jj) 
@@ -172,31 +166,7 @@ else if(dot_on == 0)axis=11;
                                         else if(line_color == 5)strip.setPixelColor(address, 0x0000FF );  // line color : Blue
                                         else if(line_color == 6)strip.setPixelColor(address, 0xFF00FF );  // line color : Magenta/pink
                                         else if(line_color == 7)strip.setPixelColor(address, 0xFFFFFF );  // line color : White
-                                        else if(line_color == 8)strip.setPixelColor(address, Wheel(9-jj + (10*ii))   );  // line color : rainbow still
-                                        else if(line_color == 9){ //green to red
-                                              if ((jj >=1) && (jj<= 2))strip.setPixelColor(address, 0x00FF00 );  
-                                              else if ((jj >2) && (jj<= 3))strip.setPixelColor(address, 0x247600 );
-                                              else if ((jj >3) && (jj<= 4))strip.setPixelColor(address, 0x366400 );
-                                              else if ((jj >4) && (jj<= 5))strip.setPixelColor(address, 0x585200 );
-                                              else if ((jj >5) && (jj<= 6))strip.setPixelColor(address, 0x623800 );
-                                              else if ((jj >6) && (jj<= 7))strip.setPixelColor(address, 0x742600 );
-                                              else if ((jj >7) && (jj<= 8))strip.setPixelColor(address, 0x861400 );
-                                              else if ((jj >8) && (jj<= 12))strip.setPixelColor(address, 0xFF0000 );
-                                              else;
-                                              }
-                                        else if(line_color == 10){ //green to red
-                                              if ((jj >=1) && (jj<= 2))strip.setPixelColor(address, 0x0000FF );  
-                                              else if ((jj >2) && (jj<= 3))strip.setPixelColor(address, 0x240076 );
-                                              else if ((jj >3) && (jj<= 4))strip.setPixelColor(address, 0x360064 );
-                                              else if ((jj >4) && (jj<= 5))strip.setPixelColor(address, 0x580052 );
-                                              else if ((jj >5) && (jj<= 6))strip.setPixelColor(address, 0x620038 );
-                                              else if ((jj >6) && (jj<= 7))strip.setPixelColor(address, 0x740026 );
-                                              else if ((jj >7) && (jj<= 8))strip.setPixelColor(address, 0x860014 );
-                                              else if ((jj >8) && (jj<= 12))strip.setPixelColor(address, 0xFF0000 );
-                                              else;
-                                              }
-
-                                        
+                                        else if(line_color == 8)strip.setPixelColor(address, Wheel(15-jj + (16*ii))   );  // line color : rainbow still
                                         else ;
                                 }
                                 else   strip.setPixelColor(address, 0  ); 
@@ -210,7 +180,7 @@ else if(dot_on == 0)axis=11;
                         rx_data = Serial.read();
                         if( rx_data == '1' ){ 
                                 line_color++;  
-                                if(line_color > 9)line_color = 0;   
+                                if(line_color > 8)line_color = 0;   
                                Xprint();
 
                         }
@@ -223,7 +193,7 @@ else if(dot_on == 0)axis=11;
                         else if( rx_data == '3') 
                         {
                                 line_color--;  
-                                if(line_color < 0)line_color = 9;   //go down through line colors
+                                if(line_color < 0)line_color = 8;   //go down through line colors
                                 Xprint();
 
                         }
