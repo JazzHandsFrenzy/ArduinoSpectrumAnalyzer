@@ -35,7 +35,7 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(100, PIN, NEO_GRB + NEO_KHZ800);
 signed int sel_freq[11] = {0,2,4,6,8,10,12,14,16,18,20};
 
 signed int freq_offset[10] = { 
-192,35,20,25,15,20,20,20,20,20   //Edit this if your shit gets weird false lights coming on. i recommend starting at all 15s and increrase if lights dont go off when source is turned all the way down. 
+192,35,20,25,15,20,20,20,20,20   //Edit this if your shit gets weird false lights coming on. i recoment starting at all 15s and increrase if lights dont go off when source is turned all the way down. 
 };      
 unsigned char freq_div[10] = { 
         2,15,15,15,15,15,15,15,15,15     //if it keeps peaking the top led, then add 1 to the specific row. 
@@ -184,7 +184,7 @@ else if(dot_on == 0)axis=11;
                                               else if ((jj >8) && (jj<= 12))strip.setPixelColor(address, 0xFF0000 );
                                               else;
                                               }
-                                        else if(line_color == 10){ //blue to red
+                                        else if(line_color == 10){ //green to red
                                               if ((jj >=1) && (jj<= 2))strip.setPixelColor(address, 0x0000FF );  
                                               else if ((jj >2) && (jj<= 3))strip.setPixelColor(address, 0x240076 );
                                               else if ((jj >3) && (jj<= 4))strip.setPixelColor(address, 0x360064 );
@@ -195,17 +195,7 @@ else if(dot_on == 0)axis=11;
                                               else if ((jj >8) && (jj<= 12))strip.setPixelColor(address, 0xFF0000 );
                                               else;
                                               }
-                                        else if(line_color == 10){ //aqua to red
-                                              if ((jj >=1) && (jj<= 2))strip.setPixelColor(address, 0x00FFFF );  
-                                              else if ((jj >2) && (jj<= 3))strip.setPixelColor(address, 0x247676 );
-                                              else if ((jj >3) && (jj<= 4))strip.setPixelColor(address, 0x366464 );
-                                              else if ((jj >4) && (jj<= 5))strip.setPixelColor(address, 0x585252 );
-                                              else if ((jj >5) && (jj<= 6))strip.setPixelColor(address, 0x623838 );
-                                              else if ((jj >6) && (jj<= 7))strip.setPixelColor(address, 0x742626 );
-                                              else if ((jj >7) && (jj<= 8))strip.setPixelColor(address, 0x861414 );
-                                              else if ((jj >8) && (jj<= 12))strip.setPixelColor(address, 0xFF0000 );
-                                              else;
-                                              }
+
                                         
                                         else ;
                                 }
