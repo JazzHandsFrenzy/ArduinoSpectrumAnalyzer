@@ -28,9 +28,9 @@ int r = 150;
 int g = 34.5;
 int b = 13.3;
 
-for(int x = 0; x <30; x++)
+for(int x = 0; x <40; x++)
 {
-int flicker = random(0,40);
+int flicker = random(0,50);
 int r1 = r-flicker;
 int g1 = g-flicker;
 int b1 = b-flicker;
