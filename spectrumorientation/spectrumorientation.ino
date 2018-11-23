@@ -20,7 +20,7 @@ unsigned char dot_dir = 1 ;      // 1:up,    0:down
 unsigned char dot_color = 7  ;   // rainbow, This is chosen further down the code, feel free to change it to what you like 
 unsigned char line_dir = 1 ;     // 1: up    0: down  
 unsigned char random_flag=0;
-unsigned char dot_on = 0; //1:on 0:off
+unsigned char dot_on = 1; //1:on 0:off
 unsigned char axis = 10; //DO NOT CHANGE!!!
 #include <Adafruit_NeoPixel.h>
 #define PIN 3
@@ -145,8 +145,8 @@ else if(dot_on == 0)axis=11;
                                 else address = jj-1 + (10*ii);
                               }
                               if(dot_on == 1){
-                                if( (ii % 2) == (line_dir)) address = 0+jj + (10*ii);
-                                else address = jj + (10*ii);}
+                                if( (ii % 2) == (line_dir)) address = 0+ii + (10*jj);
+                                else address = ii + (10*jj);}
                                  
                                 // dot color line color 
                                 if((dot_band[ii] == jj) && (dot_on == 1)) 
