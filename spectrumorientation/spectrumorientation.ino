@@ -16,7 +16,7 @@
 
 unsigned char brightness = 50;
 unsigned char line_color = 10;    // 0 : rainbow 
-unsigned char dot_dir = 1 ;      // 1:up,    0:down
+unsigned char dot_dir = 0 ;      // 1:up,    0:down
 unsigned char dot_color = 7  ;   // rainbow, This is chosen further down the code, feel free to change it to what you like 
 unsigned char line_dir = 1 ;     // 1: up    0: down  
 unsigned char random_flag=0;
@@ -35,10 +35,10 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(100, PIN, NEO_GRB + NEO_KHZ800);
 signed int sel_freq[11] = {0,2,4,6,8,10,12,14,16,18,20};
 
 signed int freq_offset[10] = { 
-192,35,20,25,15,20,20,20,20,20   //Edit this if your shit gets weird false lights coming on. i recommend starting at all 15s and increrase if lights dont go off when source is turned all the way down. 
+95,35,20,25,15,20,20,20,20,20   //Edit this if your shit gets weird false lights coming on. i recommend starting at all 15s and increrase if lights dont go off when source is turned all the way down. 
 };      
 unsigned char freq_div[10] = { 
-        2,15,15,15,15,15,15,15,15,15     //if it keeps peaking the top led, then add 1 to the specific row. 
+        10,15,15,15,15,15,15,15,15,15     //if it keeps peaking the top led, then add 1 to the specific row. 
 };
 
 unsigned char band[10] = { 
@@ -102,7 +102,7 @@ void loop() {
                         for(int ii=0; ii<10; ii++)
                         {
                                 if(dot_dir){  
-                                        if( dot_band[ii] > 0 )dot_band[ii] -=1; 
+                                        if( dot_band[ii] > 0 )dot_band[ii] +=1; 
                                 }        /// up 
                                 else {  
                                         if( dot_band[ii] > 0 )dot_band[ii] -=1;  
@@ -125,7 +125,7 @@ else if(dot_on == 0)axis=11;
                         {
                                 fft_sum += fft_log_out[ sel_freq[ii] + z ];
                         }
-                        fft_value = fft_sum / sum_count - freq_offset[ii];
+                        fft_value = fft_sum / sum_count + freq_offset[ii];
 
                         fft_value = fft_log_out[ sel_freq[ii] ] - freq_offset[ii];     // freq select
 

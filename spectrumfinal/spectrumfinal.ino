@@ -4,6 +4,12 @@
 //And lastly, I have managed to use the same wireing diagram as the instructables so, just follow the guide. 
 
 
+
+//If changing Matrix size, use control f to search for the key word matrix7 
+
+
+
+
 // 16 Band led spectrum analyzer
 // neopixel led strip 16 * 16 + hc-06 + simple mic amp
 // code by worynim@gmail.com
@@ -15,9 +21,9 @@
 
 
 unsigned char brightness = 50;
-unsigned char line_color = 10;    // 0 : rainbow 
+unsigned char line_color = 11;    // 0 : rainbow 
 unsigned char dot_dir = 1 ;      // 1:up,    0:down
-unsigned char dot_color = 7  ;   // rainbow, This is chosen further down the code, feel free to change it to what you like 
+unsigned char dot_color = 10  ;   // rainbow, This is chosen further down the code, feel free to change it to what you like 
 unsigned char line_dir = 1 ;     // 1: up    0: down  
 unsigned char random_flag=0;
 unsigned char dot_on = 0; //1:on 0:off
@@ -32,20 +38,20 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(100, PIN, NEO_GRB + NEO_KHZ800);
 #include <math.h>
 #include <FFT.h> // include the library
 
-signed int sel_freq[11] = {0,2,4,6,8,10,12,14,16,18,20};
+signed int sel_freq[11] = {0,2,4,6,8,10,12,14,16,18,20}; //matrix7 If you change your matrix size, lets say a 3x10, change the number to 4, and make sure you have a range of 0-20 in here, and only 4 numbers in the array. 
 
 signed int freq_offset[10] = { 
-192,35,20,25,15,20,20,20,20,20   //Edit this if your shit gets weird false lights coming on. i recommend starting at all 15s and increrase if lights dont go off when source is turned all the way down. 
-};      
+95,35,20,25,15,20,20,20,20,20   // Edit this if your shit gets weird false lights coming on. i recommend starting at all 15s and increrase if lights dont go off when source is turned all the way down. 
+};                              //matrix7 change this to your actual matrix size, do not add 1, and adjust the offset for the new peramiters. 
 unsigned char freq_div[10] = { 
-        2,15,15,15,15,15,15,15,15,15     //if it keeps peaking the top led, then add 1 to the specific row. 
-};
+        10,15,15,15,15,15,15,15,15,15     //if it keeps peaking the top led, then add 1 to the specific row. 
+};                                        //matrix7 do the same thing as the freq_offset. 
 
-unsigned char band[10] = { 
-        0 };  // 0~15
-unsigned char display_band[10]= {       //havent messed with this yet
+unsigned char band[10] = {  //matrix7 change this to the matrix width
+        0 };  // 0~15               //matrix7 these two lines could be reversed, cant test it now. 
+unsigned char display_band[10]= {       //matrix7 change this to the matrix height. 
         0 }; 
-unsigned char dot_band[10]={
+unsigned char dot_band[10]={          //matrix7 change this to your width of the matrix. 
         0};
         
         
@@ -96,8 +102,8 @@ void loop() {
 
                               // for(int ii=0; ii<10; ii++) display_band[ii] =0; 
 
-
-                if(++max_dot_count>=10 ) { ////8
+                    
+                if(++max_dot_count>=10 ) { ////8      //matrix7 this you have to do some thinking, but if you are keeping a 10 height, then change this lines max_dot_count to whatever your width is. 
                         max_dot_count=0; 
                         for(int ii=0; ii<10; ii++)
                         {
@@ -113,7 +119,7 @@ void loop() {
                 static unsigned char color_offset=0;
                 color_offset++;
 
-if(dot_on == 1)axis=10;
+if(dot_on == 1)axis=10;                         //matrix7 change axis to your height, and the line under to your height+1.
 else if(dot_on == 0)axis=11;
                 for(int ii=0; ii<axis; ii++)   //X-axis height
                 {
@@ -195,7 +201,7 @@ else if(dot_on == 0)axis=11;
                                               else if ((jj >8) && (jj<= 12))strip.setPixelColor(address, 0xFF0000 );
                                               else;
                                               }
-                                        else if(line_color == 10){ //aqua to red
+                                        else if(line_color == 11){ //aqua to red
                                               if ((jj >=1) && (jj<= 2))strip.setPixelColor(address, 0x00FFFF );  
                                               else if ((jj >2) && (jj<= 3))strip.setPixelColor(address, 0x247676 );
                                               else if ((jj >3) && (jj<= 4))strip.setPixelColor(address, 0x366464 );
