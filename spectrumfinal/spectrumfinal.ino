@@ -30,7 +30,7 @@ unsigned char dot_on = 0; //1:on 0:off
 unsigned char axis = 10; //DO NOT CHANGE!!!
 #include <Adafruit_NeoPixel.h>
 #define PIN 3
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(100, PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(100, PIN, NEO_GRB + NEO_KHZ800);    //Remember to add leds if you are using more than 100. 
 
 
 #define LOG_OUT 1 // use the log output function
@@ -59,8 +59,9 @@ void setup() {
     Serial.begin(9600); // use the serial port
         TIMSK0 = 0; // turn off timer0 for lower jitter
         ADCSRA = 0xe5; // set the adc to free running mode
-        ADMUX = 0b01000111; // use adc0
+        ADMUX = 0b01000111; // use adc7  Lets not fuck other people up and have them pulling hair.
         DIDR0 = 0x01; // turn off the digital input for adc0
+                      //This i think should be 0b01000111 also but i overlooked it. i wont fuck with it now until i can text it.  
 
         strip.begin();
         strip.show(); // Initialize all pixels to 'off'
